@@ -1,6 +1,6 @@
 ---
 name: e2e-video-evidence
-description: Capture, preserve, and display evidence for E2E test runs, especially logged-in browser flows and browser test videos. Use when Codex is asked to run E2E tests, verify authenticated UI flows with video proof, use Computer Use for logged-in screen inspection, leave evidence of an executed video test, show videos inline in the final response, collect Playwright/Cypress recordings, or produce a timestamped bundle containing test logs, videos, traces, screenshots, reports, and a manifest.
+description: Capture, preserve, and display evidence for E2E test runs, especially logged-in browser flows and browser test videos. Use when Codex is asked to run E2E tests, verify authenticated UI flows with video proof, use the computer-use:computer-use skill for logged-in screen inspection, leave evidence of an executed video test, show videos inline in the final response, collect Playwright/Cypress recordings, or produce a timestamped bundle containing test logs, videos, traces, screenshots, reports, and a manifest.
 ---
 
 # E2E Video Evidence
@@ -28,7 +28,7 @@ If the command fails but evidence was created, preserve the bundle and report bo
 ## Workflow
 
 1. Identify the E2E command from package scripts, test config, project docs, or the user's request.
-2. If the user asks for logged-in evidence, use Computer Use on Chrome or another allowed app to inspect the real logged-in screen before or after the run. Do not use Computer Use on apps that the runtime blocks.
+2. If the user asks for logged-in evidence, load and use `$computer-use:computer-use` from `/Users/kimurataiyou/.codex/plugins/cache/openai-bundled/computer-use/1.0.793/skills/computer-use/SKILL.md`, then inspect the real logged-in screen with Computer Use on Chrome or another allowed app before or after the run. Do not use Computer Use on apps that the runtime blocks.
 3. Ensure video recording is enabled before running tests.
 4. Run the command through `scripts/collect_e2e_video_evidence.py`.
 5. Inspect `SUMMARY.md`, `DISPLAY.md`, `manifest.json`, and copied artifacts.
@@ -39,7 +39,8 @@ If the command fails but evidence was created, preserve the bundle and report bo
 When the flow depends on authentication, evidence must show the post-login product surface, not only a login form or blank page.
 
 - Prefer an existing authenticated browser profile, app session, or Playwright storage state rather than asking the user for credentials.
-- Use Computer Use to inspect the logged-in screen when the user explicitly asks for a logged-in view or when authentication state is visually important.
+- Always use `$computer-use:computer-use` for logged-in visual confirmation when the user explicitly asks for a logged-in view or when authentication state is visually important.
+- Use Computer Use to inspect the logged-in screen through an allowed app such as Chrome. If the target app is blocked by Computer Use safety rules, use an allowed browser/app surface and state the limitation.
 - Record a durable, non-secret signal in the final response, such as the page title, visible workspace name, account avatar presence, dashboard heading, or authenticated navigation.
 - Never expose passwords, tokens, session cookies, API keys, or private account details in logs or summaries.
 - If authentication cannot be confirmed, say so and mark the evidence as not logged-in-confirmed.
