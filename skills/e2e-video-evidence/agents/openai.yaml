@@ -1,0 +1,4 @@
+interface:
+  display_name: "E2E Video Evidence"
+  short_description: "Preserve video evidence from E2E test runs."
+  default_prompt: "Run E2E tests and leave a timestamped evidence bundle with videos, logs, and a manifest."

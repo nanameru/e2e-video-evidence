@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+e2e-evidence/
+test-results/
+playwright-report/
+cypress/videos/
+cypress/screenshots/
