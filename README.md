@@ -23,7 +23,10 @@ The skill tells an agent to run E2E tests through a bundled collector script so 
 - `run.log`
 - `manifest.json`
 - `SUMMARY.md`
+- `DISPLAY.md` with paste-ready inline video Markdown
 - copied videos, traces, screenshots, reports, and related artifacts
+
+It also instructs agents to use Computer Use when the user needs evidence from a real logged-in screen, and to report whether authenticated UI was actually confirmed.
 
 ## Direct Script Usage
 

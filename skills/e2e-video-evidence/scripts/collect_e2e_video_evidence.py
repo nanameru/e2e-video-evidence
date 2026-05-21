@@ -228,9 +228,36 @@ def write_summary(bundle_dir: Path, manifest: dict) -> None:
     lines.append("")
     lines.append("- `run.log`")
     lines.append("- `manifest.json`")
+    lines.append("- `DISPLAY.md`")
     lines.append("- `artifacts/`")
     lines.append("")
     (bundle_dir / "SUMMARY.md").write_text("\n".join(lines), encoding="utf-8")
+
+
+def display_path(record: dict) -> str:
+    stored_as = record.get("stored_as")
+    return stored_as or record["source"]
+
+
+def write_display(bundle_dir: Path, manifest: dict) -> None:
+    videos = [item for item in manifest["artifacts"] if item["kind"] == "video"]
+    lines = [
+        "# E2E Evidence Display",
+        "",
+        "Paste the Markdown below into the final response so the user sees the video inline.",
+        "",
+    ]
+    if videos:
+        for index, video in enumerate(videos, start=1):
+            path = display_path(video)
+            lines.append(f"## Video {index}: {video['relative_path']}")
+            lines.append("")
+            lines.append(f"![E2E evidence video {index}]({path})")
+            lines.append("")
+    else:
+        lines.append("No video files were found to display inline.")
+        lines.append("")
+    (bundle_dir / "DISPLAY.md").write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> int:
@@ -306,11 +333,13 @@ def main() -> int:
         encoding="utf-8",
     )
     write_summary(bundle_dir, manifest)
+    write_display(bundle_dir, manifest)
 
     video_count = sum(1 for item in artifact_records if item["kind"] == "video")
     print(f"\nEvidence directory: {bundle_dir}")
     print(f"Artifacts collected: {len(artifact_records)}")
     print(f"Videos collected: {video_count}")
+    print(f"Inline display snippet: {bundle_dir / 'DISPLAY.md'}")
     return exit_code
 
 
